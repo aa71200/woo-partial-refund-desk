@@ -1,5 +1,7 @@
 # Partial Refund Desk for WooCommerce
 
+**What to try.** Open the manual refund screen in a disposable store to review the lines, taxes and total before confirming.
+
 [![WordPress and WooCommerce integration checks](https://github.com/aa71200/woo-partial-refund-desk/actions/workflows/checks.yml/badge.svg?branch=main)](https://github.com/aa71200/woo-partial-refund-desk/actions/workflows/checks.yml)
 
 A manual refund needs to account for discounts, tax and any refunds already recorded on the order. This CodexaWP sample previews the remaining amount, then records the confirmed refund through the WooCommerce API.

@@ -158,18 +158,26 @@ function quantities_from_post(): array {
 	return $quantities;
 }
 
+function requested_order_id( mixed $value ): int {
+	if ( ! is_string( $value ) || ! ctype_digit( $value ) ) {
+		return 0;
+	}
+	return (int) filter_var( ltrim( $value, '0' ), FILTER_VALIDATE_INT, [ 'options' => [ 'min_range' => 1 ] ] );
+}
+
 add_action( 'admin_menu', static function (): void {
 	$title = __( 'Partial Refund Desk', 'woo-partial-refund-desk' );
 	$hook = add_submenu_page( 'woocommerce', $title, $title, 'manage_woocommerce', 'codexawp-refunds', __NAMESPACE__ . '\page' );
 	if ( $hook ) {
 		add_action( 'load-' . $hook, static function (): void {
-			wp_enqueue_style( 'codexawp-refund-desk', plugins_url( 'desk.css', __FILE__ ), [], '1.1.0' );
+			wp_enqueue_style( 'codexawp-refund-desk', plugins_url( 'desk.css', __FILE__ ), [], '1.2.0' );
 		} );
 	}
 } );
 
 function page(): void {
-	$order_id = absint( $_GET['order'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	// This lookup only selects a record. The review and confirmation use a separate nonce.
+	$order_id = requested_order_id( $_GET['order'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Validate a positive integer in requested_order_id().
 	$order = $order_id && current_user_can( 'edit_shop_order', $order_id ) ? wc_get_order( $order_id ) : false;
 	echo '<div class="wrap codexawp-refund-desk"><header class="desk-header"><div><h1>' . esc_html__( 'Partial Refund Desk', 'woo-partial-refund-desk' ) . '</h1><p>' .
 		esc_html__( 'Review line items and tax before recording a refund.', 'woo-partial-refund-desk' ) . '</p></div><span class="desk-mode">' .
@@ -178,7 +186,13 @@ function page(): void {
 		esc_html__( 'Order ID', 'woo-partial-refund-desk' ) . ' <input name="order" type="number" min="1" required value="' . esc_attr( (string) $order_id ) .
 		'"></label> <button class="button">' . esc_html__( 'Load order', 'woo-partial-refund-desk' ) . '</button></form>';
 	if ( ! $order || 'shop_order' !== $order->get_type() ) {
-		echo '</div>';
+		echo '<div class="desk-card desk-empty" role="status"><h2>' . esc_html__(
+			'Choose an order to review',
+			'woo-partial-refund-desk'
+		) . '</h2><p>' . esc_html__(
+			'Enter a valid order ID to preview a partial refund.',
+			'woo-partial-refund-desk'
+		) . '</p></div></div>';
 		return;
 	}
 	$quantities = [];

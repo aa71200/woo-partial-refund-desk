@@ -1,0 +1,44 @@
+{
+    "_comment": "Pre-existing findings from the portfolio review. Counts are limited to this file and sniff. Remove entries as code is corrected.",
+    "files": {
+        "tests/check.php": {
+            "ERROR Generic.Files.LineEndings.InvalidEOLChar": 1,
+            "ERROR Squiz.Commenting.FileComment.Missing": 1,
+            "ERROR Squiz.Commenting.FunctionComment.Missing": 1,
+            "ERROR Universal.Arrays.DisallowShortArraySyntax.Found": 14,
+            "ERROR WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 4,
+            "ERROR WordPress.Security.EscapeOutput.ExceptionNotEscaped": 1,
+            "ERROR WordPress.Security.EscapeOutput.OutputNotEscaped": 3,
+            "ERROR WordPress.WP.GlobalVariablesOverride.Prohibited": 1,
+            "WARNING Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 7,
+            "WARNING WordPress.PHP.DiscouragedPHPFunctions.system_calls_proc_open": 1,
+            "WARNING WordPress.WP.AlternativeFunctions.file_system_operations_fclose": 1,
+            "WARNING WordPress.WP.AlternativeFunctions.file_system_operations_fwrite": 1
+        },
+        "woo-partial-refund-desk.php": {
+            "ERROR Generic.Files.LineEndings.InvalidEOLChar": 1,
+            "ERROR PEAR.Functions.FunctionCallSignature.CloseBracketLine": 8,
+            "ERROR PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket": 8,
+            "ERROR PEAR.Functions.FunctionCallSignature.MultipleArguments": 4,
+            "ERROR PSR2.Namespaces.NamespaceDeclaration.BlankLineAfter": 1,
+            "ERROR Squiz.Commenting.FileComment.MissingPackageTag": 1,
+            "ERROR Squiz.Commenting.FileComment.SpacingAfterComment": 1,
+            "ERROR Squiz.Commenting.FunctionComment.Missing": 7,
+            "ERROR Universal.Arrays.DisallowShortArraySyntax.Found": 17,
+            "ERROR WordPress.Arrays.ArrayDeclarationSpacing.ArrayItemNoNewLine": 7,
+            "ERROR WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound": 3,
+            "ERROR WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys": 4,
+            "ERROR WordPress.PHP.YodaConditions.NotYoda": 1,
+            "ERROR WordPress.Security.ValidatedSanitizedInput.InputNotSanitized": 1,
+            "ERROR WordPress.Security.ValidatedSanitizedInput.MissingUnslash": 2,
+            "ERROR WordPress.WhiteSpace.CastStructureSpacing.NoSpaceBeforeOpenParenthesis": 1,
+            "WARNING Generic.Formatting.MultipleStatementAlignment.NotSameWarning": 20,
+            "WARNING WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned": 8,
+            "WARNING WordPress.DB.DirectDatabaseQuery.DirectQuery": 2,
+            "WARNING WordPress.DB.DirectDatabaseQuery.NoCaching": 2,
+            "WARNING WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode": 1,
+            "WARNING WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode": 1,
+            "WARNING WordPress.WP.Capabilities.Unknown": 4
+        }
+    }
+}

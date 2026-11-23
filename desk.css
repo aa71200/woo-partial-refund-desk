@@ -1,9 +1,9 @@
 .codexawp-refund-desk {
-	--desk-ink: #152446;
-	--desk-muted: #4e5d76;
-	--desk-line: #dbe3f0;
-	--desk-blue: #254cc8;
-	--desk-paper: #f1f5fc;
+	--desk-ink: #1b332f;
+	--desk-muted: #475f58;
+	--desk-line: #d5e0dc;
+	--desk-blue: #246951;
+	--desk-paper: #eff5f1;
 	box-sizing: border-box;
 	max-inline-size: 1090px;
 	padding: clamp(12px, 2.6vw, 36px);
@@ -19,13 +19,13 @@
 	gap: 18px;
 	padding: clamp(20px, 3.5vw, 36px);
 	color: #fff;
-	background: linear-gradient(112deg, #131f3d, #223e76);
+	background: linear-gradient(112deg, #193933, #2d5b4b);
 	border-radius: 12px;
 }
 .codexawp-refund-desk .desk-header h1 { color: inherit; padding: 0; font-size: clamp(27px, 3vw, 39px); font-weight: 680; letter-spacing: -.04em; }
-.codexawp-refund-desk .desk-header p { margin: 8px 0 0; color: #d6e2fb; font-size: 14px; }
+.codexawp-refund-desk .desk-header p { margin: 8px 0 0; color: #d9eae1; font-size: 14px; }
 .codexawp-refund-desk .desk-mode { color: #ffda93; border: 1px solid #ffffff57; padding: 6px 10px; border-radius: 6px; white-space: nowrap; font-size: 12px; font-weight: 650; }
-.codexawp-refund-desk .desk-lookup { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; margin: 20px 0; }
+.codexawp-refund-desk .desk-lookup { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; margin: 16px 0; padding: 14px; background: #fff; border: 1px solid var(--desk-line); border-radius: 12px; }
 .codexawp-refund-desk .desk-label { display: grid; gap: 5px; font-size: 13px; font-weight: 650; }
 .codexawp-refund-desk .desk-label input { margin: 0; min-height: 38px; padding-inline: 10px; border: 1px solid #9aaac5; color: var(--desk-ink); border-radius: 6px; }
 .codexawp-refund-desk .desk-lookup input { inline-size: 150px; }
@@ -39,7 +39,7 @@
 .codexawp-refund-desk .desk-line small { margin-top: 4px; color: var(--desk-muted); }
 .codexawp-refund-desk .desk-quantity input { inline-size: 76px; }
 .codexawp-refund-desk .desk-review { border-block-start: 3px solid var(--desk-blue); }
-.codexawp-refund-desk .desk-order { font: 650 12px/1.3 system-ui; color: #324f9d; }
+.codexawp-refund-desk .desk-order { display: inline-block; margin-block-end: 6px; padding: 4px 8px; border-radius: 6px; background: #e7f2eb; font: 650 12px/1.3 system-ui; color: #285741; }
 .codexawp-refund-desk .desk-total { display: block; margin-block: 6px 14px; color: var(--desk-ink); font-size: clamp(28px, 3vw, 40px); font-weight: 720; letter-spacing: -.045em; line-height: 1; }
 .codexawp-refund-desk .desk-breakdown { margin: 12px 0; color: var(--desk-muted); }
 .codexawp-refund-desk .desk-breakdown div { display: flex; justify-content: space-between; gap: 8px; padding: 7px 0; border-block-start: 1px solid var(--desk-line); }
@@ -50,4 +50,5 @@
 .codexawp-refund-desk .desk-error, .codexawp-refund-desk .desk-success { padding: 10px 12px; border-radius: 6px; }
 .codexawp-refund-desk .desk-error { color: #892b34; background: #fcecef; }
 .codexawp-refund-desk .desk-success { color: #17513c; background: #e9f5ec; margin-block: 16px 0; }
+.codexawp-refund-desk :is(input, button):focus-visible { outline: 2px solid #347a62; outline-offset: 3px; }
 @media (max-width: 760px) { .codexawp-refund-desk .desk-layout { grid-template-columns: 1fr; } .codexawp-refund-desk .desk-header { flex-wrap: wrap; } }
