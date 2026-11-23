@@ -1,6 +1,6 @@
 # Partial Refund Desk for WooCommerce
 
-An original CodexaWP portfolio demo for reviewing and recording manual WooCommerce refunds. The preview calculates a line's remaining discounted amount and tax after previous refunds. The recorded operation uses the WooCommerce refund API on the test order.
+A manual refund needs to account for discounts, tax and any refunds already recorded on the order. This CodexaWP sample previews the remaining amount, then records the confirmed refund through the WooCommerce API.
 
 ## Interface preview
 
