@@ -28,6 +28,9 @@ if ( '--confirm' === ( $argv[1] ?? '' ) ) {
 
 $admin = get_users( [ 'role' => 'administrator', 'number' => 1, 'fields' => 'ID' ] )[0];
 wp_set_current_user( $admin );
+check( 42 === \CodexaWP\RefundDesk\requested_order_id( '0042' ), 'The lookup accepts a positive order ID' );
+check( 0 === \CodexaWP\RefundDesk\requested_order_id( array( '42' ) ), 'The lookup rejects array input without selecting another order' );
+check( 0 === \CodexaWP\RefundDesk\requested_order_id( '-42' ), 'The lookup does not convert a negative ID into a different order' );
 $order = wc_create_order();
 $item = new WC_Order_Item_Product();
 $item->set_name( 'Workshop kit' );
