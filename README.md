@@ -20,7 +20,7 @@ Open **WooCommerce → Partial Refund Desk** as a shop manager, load a test orde
 
 Activate this plugin on a disposable WordPress site with WooCommerce active and `WP_ENVIRONMENT_TYPE` set to `local`. Set `CODEXAWP_TEST_WP_LOAD` to the absolute path to that site's `wp-load.php`, then run `php tests/check.php` from this repository.
 
-The fixture covers a discounted taxable line, retrying the same confirmation, an excessive quantity and the remaining amount after an earlier refund.
+The fixture covers discounted taxable lines, a same-total change in selected lines, concurrent confirmation, and a native refund created after preview. The signed review is bound to the order, administrator, currency, lines and tax, and is valid for 10 minutes for a new operation. The order lock covers confirmations through this tool. It records manual refunds and does not send a payment or restock items.
 
 ## License
 
