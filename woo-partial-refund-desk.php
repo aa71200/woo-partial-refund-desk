@@ -107,14 +107,19 @@ function quantities_from_post(): array {
 }
 
 add_action( 'admin_menu', static function (): void {
-	add_submenu_page( 'woocommerce', 'Partial Refund Desk', 'Partial Refund Desk', 'manage_woocommerce', 'codexawp-refunds', __NAMESPACE__ . '\page' );
+	$hook = add_submenu_page( 'woocommerce', 'Partial Refund Desk', 'Partial Refund Desk', 'manage_woocommerce', 'codexawp-refunds', __NAMESPACE__ . '\page' );
+	if ( $hook ) {
+		add_action( 'load-' . $hook, static function (): void {
+			wp_enqueue_style( 'codexawp-refund-desk', plugins_url( 'desk.css', __FILE__ ), [], '1.1.0' );
+		} );
+	}
 } );
 
 function page(): void {
 	$order_id = absint( $_GET['order'] ?? 0 ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	$order = $order_id && current_user_can( 'edit_shop_order', $order_id ) ? wc_get_order( $order_id ) : false;
-	echo '<div class="wrap"><h1>Partial Refund Desk</h1>';
-	echo '<form method="get"><input type="hidden" name="page" value="codexawp-refunds"><label>Order ID <input name="order" type="number" min="1" required value="' . esc_attr( (string) $order_id ) . '"></label> <button class="button">Load order</button></form>';
+	echo '<div class="wrap codexawp-refund-desk"><header class="desk-header"><div><h1>Partial Refund Desk</h1><p>Review line items and tax before recording a refund.</p></div><span class="desk-mode">Manual refund</span></header>';
+	echo '<form class="desk-lookup" method="get"><input type="hidden" name="page" value="codexawp-refunds"><label class="desk-label">Order ID <input name="order" type="number" min="1" required value="' . esc_attr( (string) $order_id ) . '"></label> <button class="button">Load order</button></form>';
 	if ( ! $order || 'shop_order' !== $order->get_type() ) {
 		echo '</div>';
 		return;
@@ -131,26 +136,35 @@ function page(): void {
 			if ( is_wp_error( $refund ) ) {
 				$result = $refund;
 			} else {
-				echo '<p>Manual refund recorded. Refund ID: ' . esc_html( (string) $refund->get_id() ) . '.</p></div>';
+				echo '<p class="desk-success" role="status">Manual refund recorded. Refund #' . esc_html( (string) $refund->get_id() ) . '.</p></div>';
 				return;
 			}
 		} else {
 			$result = preview( $order, $quantities );
 		}
 	}
-	echo '<form method="post">';
+	echo '<form class="desk-layout" method="post">';
 	wp_nonce_field( 'codexawp_refund_' . $order_id );
+	echo '<section class="desk-card" aria-labelledby="desk-items"><span class="desk-order">Order #' . esc_html( $order->get_order_number() ) . '</span><h2 id="desk-items">Items to refund</h2><p>Choose a quantity from the remaining units.</p>';
 	foreach ( $order->get_items() as $item ) {
 		$id = $item->get_id();
 		$remaining = $item->get_quantity() - abs( $order->get_qty_refunded_for_item( $id ) );
-		echo '<p><label>' . esc_html( $item->get_name() . ' — quantity to refund' ) . ' <input name="refund_qty[' . esc_attr( (string) $id ) . ']" type="number" min="0" max="' . esc_attr( (string) $remaining ) . '" value="' . esc_attr( (string) ( $quantities[$id] ?? 0 ) ) . '"></label></p>';
+		echo '<div class="desk-line"><div><strong>' . esc_html( $item->get_name() ) . '</strong><small>' . esc_html( sprintf( '%d refundable · %d originally ordered', $remaining, $item->get_quantity() ) ) . '</small></div>';
+		echo '<label class="desk-label desk-quantity">Quantity<input aria-label="' . esc_attr( 'Quantity to refund for ' . $item->get_name() ) . '" name="refund_qty[' . esc_attr( (string) $id ) . ']" type="number" min="0" max="' . esc_attr( (string) $remaining ) . '" value="' . esc_attr( (string) ( $quantities[$id] ?? 0 ) ) . '"></label></div>';
 	}
-	echo '<button class="button" name="preview_refund" value="1">Preview refund</button>';
+	echo '<button class="button" name="preview_refund" value="1">Preview refund</button></section>';
+	echo '<section class="desk-card desk-review" aria-labelledby="desk-summary"><h2 id="desk-summary">Refund summary</h2>';
 	if ( is_wp_error( $result ) ) {
-		echo '<p role="alert">' . esc_html( $result->get_error_message() ) . '</p>';
+		echo '<p class="desk-error" role="alert">' . esc_html( $result->get_error_message() ) . '</p>';
 	} elseif ( $result ) {
-		echo '<p>Refund total including tax: ' . wp_kses_post( wc_price( $result['amount'], [ 'currency' => $order->get_currency() ] ) ) . '</p>';
+		$net = array_sum( array_column( $result['line_items'], 'refund_total' ) );
+		$tax = array_sum( array_map( 'array_sum', array_column( $result['line_items'], 'refund_tax' ) ) );
+		$currency = [ 'currency' => $order->get_currency() ];
+		echo '<p>Refund total including tax</p><strong class="desk-total">' . wp_kses_post( wc_price( $result['amount'], $currency ) ) . '</strong>';
+		echo '<dl class="desk-breakdown"><div><dt>Item subtotal</dt><dd>' . wp_kses_post( wc_price( $net, $currency ) ) . '</dd></div><div><dt>Tax</dt><dd>' . wp_kses_post( wc_price( $tax, $currency ) ) . '</dd></div></dl>';
 		echo '<input type="hidden" name="operation" value="' . esc_attr( wp_generate_uuid4() ) . '"><input type="hidden" name="expected_amount" value="' . esc_attr( $result['amount'] ) . '"> <button class="button button-primary" name="confirm_refund" value="1">Record manual refund</button>';
+	} else {
+		echo '<p>Preview your selection to see the amount, tax and confirmation action.</p>';
 	}
-	echo '</form></div>';
+	echo '</section></form></div>';
 }
