@@ -2,7 +2,13 @@
 
 An original CodexaWP portfolio demo for reviewing and recording manual WooCommerce refunds. The preview calculates a line's remaining discounted amount and tax after previous refunds. The recorded operation uses the WooCommerce refund API on the test order.
 
-![Partial refund preview on a synthetic order](docs/refund-preview.png)
+## Interface preview
+
+<p align="center">
+  <a href="docs/refund-preview.png"><img src="docs/refund-preview.png" width="900" alt="Partial refund preview with selected order items, subtotal, tax, and total"></a>
+  <br>
+  <em>Manual refund preview · two selected items, $19.80 including tax</em>
+</p>
 
 ## Try it
 
